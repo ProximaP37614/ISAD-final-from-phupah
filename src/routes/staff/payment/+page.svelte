@@ -185,6 +185,12 @@
                     </div>
                   </div>
                 </div>
+                {:else if selectedPaymentMethod === 'Money'}
+                <!-- Cash section -->
+                <div class="mb-8">
+                  <p class="block mb-6 text-[#102C57] font-extrabold text-3xl">กรอกจำนวนเงินสด</p>
+                  <input type="number" placeholder="จำนวนเงินสด" class="w-full p-4 border rounded-lg text-lg" required />
+                </div>
               {/if}
       
               <!-- Payment Button -->

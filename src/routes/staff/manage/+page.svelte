@@ -36,25 +36,6 @@
       }
     locationDict[lstLine[i]] = temLst;
   }
-
-  let newTrip = {
-    trip_id: '',
-    start: '',
-    end: '',
-    from_datetime: '',
-    arrivalTime: '',
-    class: '',
-    seats: '',
-    staff_id: ''
-  };
-
-  let newStation = {
-    station_id: '',
-    station_name: '',
-    station_address: '',
-    time_use: '',
-    station_status: ''
-  };
   function timeToSeconds(timeStr) {
   // Handle null or undefined input
   if (!timeStr) {
@@ -332,8 +313,6 @@ async function saveStation(stationId) {
             <th class="px-4 py-2">ปลายทาง</th>
             <th class="px-4 py-2">วัน / เวลาที่ออก</th>
             <th class="px-4 py-2">เวลาที่ถึง</th>
-            <th class="px-4 py-2">ชั้นโดยสาร</th>
-            <th class="px-4 py-2">จำนวนที่นั่ง</th>
             <th class="px-4 py-2">พนักงานตรวจ</th>
             <th class="px-4 py-2">จัดการเที่ยวโดยสาร</th>
           </tr>
@@ -364,8 +343,6 @@ async function saveStation(stationId) {
                 {/if}
               </td>
               <td class="border px-4 py-2">{trip.arrivalTime}</td>
-              <td class="border px-4 py-2">{trip.available_classes}</td>
-              <td class="border px-4 py-2">{trip.seats}</td>
               <td class="border px-4 py-2">
                 {#if editingTripId === trip.trip_id}
                   <input type="text" bind:value={trip.staff_id} class="w-full border p-1" />
@@ -389,7 +366,7 @@ async function saveStation(stationId) {
                 {/if}
                 <button
                   on:click={() => deleteTrip(trip.trip_id)}
-                  class="w-full sm:w-32 bg-red-500 text-white rounded px-4 py-2">
+                  class="w-full sm:w-32 bg-red-500 text-white rounded px-4 py-2 mb-2 sm:mr-2">
                   ลบเที่ยวโดยสาร
                 </button>
               </td>
@@ -477,7 +454,7 @@ async function saveStation(stationId) {
                 {/if}
                 <button
                   on:click={() => deleteStation(station.station_id)}
-                  class="w-full sm:w-32 bg-red-500 text-white rounded px-4 py-2">
+                  class="w-full sm:w-32 bg-red-500 text-white rounded px-4 py-2 mb-2 sm:mr-2">
                   ลบสถานีรถไฟ
                 </button>
               </td>

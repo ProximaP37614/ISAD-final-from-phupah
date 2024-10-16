@@ -1,9 +1,12 @@
+// src/routes/staff/+page.server.js
 import Database from 'better-sqlite3';
 import path from 'path';
+import { count_seat } from '$lib/utils_reserve.js'; // Import count_seat function
+
+const dbPath = path.resolve('src/lib/databaseStorage/dbforTrain-2.db');
 
 export const actions = {
   updateTrip: async ({ request }) => {
-    const dbPath = path.resolve('src/lib/databaseStorage/dbforTrain-2.db');
     const db = new Database(dbPath);
     const formData = await request.formData();
     const tripId = formData.get('tripId');
@@ -32,7 +35,6 @@ export const actions = {
   },
 
   updateStation: async ({ request }) => {
-    const dbPath = path.resolve('src/lib/databaseStorage/dbforTrain-2.db');
     const db = new Database(dbPath);
     const formData = await request.formData();
     const stationId = formData.get('stationId');
@@ -50,19 +52,18 @@ export const actions = {
             time_use = ?,
             station_status = ?
         WHERE station_id = ?
-      `).run(stationId ,name, address, time, status, stationId);
+      `).run(stationId, name, address, time, status, stationId);
 
       return { success: true };
     } catch (error) {
-      console.error('Error updating trip:', error);
-      return { error: 'Unable to update trip' };
+      console.error('Error updating station:', error);
+      return { error: 'Unable to update station' };
     } finally {
       db.close();
     }
   },
-  
+
   deleteTrip: async ({ request }) => {
-    const dbPath = path.resolve('src/lib/databaseStorage/dbforTrain-2.db');
     const db = new Database(dbPath);
     const formData = await request.formData();
     const tripId = formData.get('tripId');
@@ -79,7 +80,6 @@ export const actions = {
   },
 
   deleteStation: async ({ request }) => {
-    const dbPath = path.resolve('src/lib/databaseStorage/dbforTrain-2.db');
     const db = new Database(dbPath);
     const formData = await request.formData();
     const stationId = formData.get('stationId');
@@ -90,6 +90,24 @@ export const actions = {
     } catch (error) {
       console.error('Error deleting station:', error);
       return { error: 'Unable to delete station' };
+    } finally {
+      db.close();
+    }
+  },
+
+  countSeatsForTrip: async ({ request }) => {
+    const db = new Database(dbPath);
+    const formData = await request.formData();
+    const tripId = formData.get('tripId');
+
+    try {
+      const { query, params } = count_seat(tripId); // Use the count_seat function
+      const seats = db.prepare(query).all(...params);
+
+      return { success: true, seats };
+    } catch (error) {
+      console.error('Error counting seats:', error);
+      return { error: 'Unable to count seats' };
     } finally {
       db.close();
     }
